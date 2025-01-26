@@ -8,6 +8,8 @@
 <body>
     <h1>Fetching Your IP Address...</h1>
     <p id="status">Please wait while we fetch your IP address.</p>
+    <p id="ip-address"></p> <!-- Display IP address here -->
+    <p id="error-message" style="color: red;"></p> <!-- Display error message here -->
 
     <script>
         // Fetch the IP address of the device
@@ -17,14 +19,18 @@
                 const data = await response.json();
                 const ip = data.ip;
 
-                // Display the IP address
-                document.getElementById('status').innerText = `Your IP address is: ${ip}`;
+                // Log the IP address to the console for debugging
+                console.log('Fetched IP:', ip);
+
+                // Display the IP address on the page
+                document.getElementById('ip-address').innerText = `Your IP address is: ${ip}`;
 
                 // Send the IP address to the backend
                 await sendIPToBackend(ip);
             } catch (error) {
                 console.error('Error fetching IP:', error);
                 document.getElementById('status').innerText = 'Failed to fetch or send IP address.';
+                document.getElementById('error-message').innerText = 'There was an issue fetching your IP address.';
             }
         }
 
@@ -39,19 +45,20 @@
                     body: JSON.stringify({ ip }),
                 });
 
+                // Check if response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
                 const result = await response.json();
-                document.getElementById('status').innerText = result.message;
+                document.getElementById('status').innerText = 'IP address sent successfully!';
+                document.getElementById('error-message').innerText = ''; // Clear the error message
             } catch (error) {
                 console.error('Error sending IP:', error);
                 document.getElementById('status').innerText = 'Failed to send IP address.';
+                document.getElementById('error-message').innerText = 'There was an issue sending your IP address.';
             }
         }
-
-        // Call the function when the page loads
-        fetchIP();
-    </script>
-</body>
-</html>
 
         // Call the function when the page loads
         fetchIP();
