@@ -13,42 +13,25 @@
         // Fetch the IP address of the device
         async function fetchIP() {
             try {
-                const response = await fetch('https://api.ipify.org?format=json');
+                const response = await fetch('https://api.ipify.org?format=json'); // Fetch the IP address
                 const data = await response.json();
                 const ip = data.ip;
 
                 // Display the IP address
-                document.getElementById('status').innerText = `Your IP address is: ${ip}`;
- // Send the IP address to a backend service
-async function sendIPToBackend(ip) {
-    try {
-        const response = await fetch('https://your-repl-name.repl.co/send-ip', { // Replace with your Replit URL
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ip }),
-        });
+                document.getElementById('status').innerText = Your IP address is: ${ip};
 
-        const result = await response.json();
-        document.getElementById('status').innerText = result.message;
-    } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('status').innerText = 'Failed to send IP address.';
-    }
-}
-                // Send the IP address to a backend service
+                // Send the IP address to the backend
                 await sendIPToBackend(ip);
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error fetching IP:', error);
                 document.getElementById('status').innerText = 'Failed to fetch or send IP address.';
             }
         }
 
-        // Send the IP address to a backend service
+        // Send the IP address to the backend service
         async function sendIPToBackend(ip) {
             try {
-                const response = await fetch('https://your-backend-service.com/send-ip', {
+                const response = await fetch('https://your-backend-service.com/send-ip', { // Replace with your backend URL
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -59,7 +42,7 @@ async function sendIPToBackend(ip) {
                 const result = await response.json();
                 document.getElementById('status').innerText = result.message;
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error sending IP:', error);
                 document.getElementById('status').innerText = 'Failed to send IP address.';
             }
         }
