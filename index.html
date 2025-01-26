@@ -8,8 +8,7 @@
 <body>
     <h1>Fetching Your IP Address...</h1>
     <p id="status">Please wait while we fetch your IP address.</p>
-    <p id="ip-address"></p> <!-- Display IP address here -->
-    <p id="error-message" style="color: red;"></p> <!-- Display error message here -->
+    <p id="ip-display"></p>  <!-- Display the IP address here -->
 
     <script>
         // Fetch the IP address of the device
@@ -19,61 +18,33 @@
                 const data = await response.json();
                 const ip = data.ip;
 
-                // Log the IP address to the console for debugging
-                console.log('Fetched IP:', ip);
-
-                // Display the IP address on the page
-                document.getElementById('ip-address').innerText = `Your IP address is: ${ip}`;
+                // Display the IP address
+                document.getElementById('ip-display').innerText = `Your IP address is: ${ip}`;
 
                 // Send the IP address to the backend
                 await sendIPToBackend(ip);
             } catch (error) {
                 console.error('Error fetching IP:', error);
                 document.getElementById('status').innerText = 'Failed to fetch or send IP address.';
-                document.getElementById('error-message').innerText = 'There was an issue fetching your IP address.';
             }
         }
 
         // Send the IP address to the backend service
         async function sendIPToBackend(ip) {
-    try {
-        const response = await fetch('https://580b7304-965a-4dc6-8966-3af8cf9f1873-00-byst0hum437s.riker.replit.dev/send-ip', { // backend URL
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ip }),
-        });
-
-        console.log('Backend Response:', response); // Log the response object
-
-        // Check if the response is OK
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        document.getElementById('status').innerText = 'IP address sent successfully!';
-        document.getElementById('error-message').innerText = ''; // Clear error message
-    } catch (error) {
-        console.error('Error sending IP:', error);
-        document.getElementById('status').innerText = 'Failed to send IP address.';
-        document.getElementById('error-message').innerText = `There was an issue sending your IP address: ${error.message}`;
-    }
-}
-
-                // Check if response is OK
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
+            try {
+                const response = await fetch('https://your-backend-url.com/send-ip', {  // Replace with your backend URL
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ ip }),
+                });
 
                 const result = await response.json();
-                document.getElementById('status').innerText = 'IP address sent successfully!';
-                document.getElementById('error-message').innerText = ''; // Clear the error message
+                document.getElementById('status').innerText = result.message;  // Show success message
             } catch (error) {
                 console.error('Error sending IP:', error);
                 document.getElementById('status').innerText = 'Failed to send IP address.';
-                document.getElementById('error-message').innerText = 'There was an issue sending your IP address.';
             }
         }
 
